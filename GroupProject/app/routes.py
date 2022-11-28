@@ -33,7 +33,7 @@ def login():
             next_page = url_for('index')
             return redirect(next_page)
 
-        return redirect({{url_for('index')}})
+        return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -57,3 +57,12 @@ def register():
         flash("Congratulations! You are now a registered user!")
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/admin')
+@login_required
+def admin():
+    headings = ("ID", "Username", "Search: Team Name",
+                "Search: Year", "Result", "Time", "Date")
+    data = ()
+    return render_template('adminView.html', headings=headings, data=data)

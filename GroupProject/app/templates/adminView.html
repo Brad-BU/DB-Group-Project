@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Admin View </h1>
+<body>
+    <table class="table">
+        <tr class="table__header">
+            {% for header in headings %}
+            <th class="table__cell">{{ header }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in data %}
+            <tr class="table__row">
+                {% for cell in row %}
+                <td class="table__cell">{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+
+    </table>
+</body>
+{% endblock %}

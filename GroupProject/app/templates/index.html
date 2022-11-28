@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-  h1{text-align: center}
-</style>
-  {% if title %}
-  <h1>Hi, {{current_user.username}}!, welcome to 2B || !2B Baseball DataBase!</h1>
-  {% else %}
-  <h1>Welcome to 2B || !2B Baseball DataBase!</h1>
-  {% endif %}
+{% if title %}
+    <h1>Hi, {{current_user.username}}!, welcome to 2B || !2B Baseball DataBase!</h1>
+{% else %}
+    <h1>Welcome to 2B || !2B Baseball DataBase!</h1>
+{% endif %}
+
+<div class="dropdown">
+  <button class="dropbtn">Team Name</button>
+  <div class="dropdown-content">
+    <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
+  </div>
+</div>
+
+<div class="dropdown">
+  <button class="dropbtn">Year</button>
+  <div class="dropdown-content">
+    <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
+  </div>
+</div>
+
 {% endblock %}
