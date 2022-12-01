@@ -3,14 +3,16 @@ from werkzeug.urls import url_parse
 from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db
 from app.forms import LoginForm, RegistrationForm
-from app.models import User
-
+from app.models import User, UserActions
+import datetime
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
     title = "Home"
+    # this is where you would add the user-action class and
+    # create the data to add to the schema
     return render_template('index.html', title=title)
 
 
