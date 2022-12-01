@@ -14,7 +14,8 @@ class User(UserMixin, db.Model, Base):
     password_hash = db.Column(db.String(128))
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '{}'.format(self.id) + ' {}'.format(self.username)
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -28,8 +29,8 @@ class UserActions(db.Model, Base):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, index=True)
     username = db.Column(db.String(64), index=True)
-    teamName = db.Column(db.String(64), index=True)
-    year = db.Column(db.String(64), index=True)
+    search_filter0 = db.Column(db.String(64), index=True)
+    search_filter1 = db.Column(db.String(64), index=True)
     result = db.Column(db.String(64), index=True)
     datetime = db.Column(db.String(64), index=True)
 

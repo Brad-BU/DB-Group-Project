@@ -4,17 +4,30 @@ from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db
 from app.forms import LoginForm, RegistrationForm
 from app.models import User, UserActions
-import datetime
+from datetime import datetime
 
-@app.route('/')
-@app.route('/index')
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema
-    select = request.form.get('val')
-    print(select)
+    if request.method == "POST":
+        if request.form['select1'] == 'None' or request.form['select2'] == 'None':
+            flash('Must select category for each')  # why doesn't this work
+        else:
+            temp = str(current_user)
+            temp = temp.split(' ')
+            u = UserActions()
+            u.userId = temp[0]
+            u.username = temp[1]
+            u.search_filter0 = request.form.get('select1')
+            u.search_filter1 = request.form.get('select2')
+            u.result = 'result'
+            u.datetime = str(datetime.now())
+            return render_template('searchResults.html')
     return render_template('index.html', title=title)
 
 
@@ -36,7 +49,6 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
             return redirect(next_page)
-
         return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
@@ -70,3 +82,8 @@ def admin():
                 "Search: Year", "Result", "Time", "Date")
     data = ()
     return render_template('adminView.html', headings=headings, data=data)
+
+
+@app.route('/results', methods=['POST', 'GET'])
+def submit():
+    return render_template('searchResults.html')

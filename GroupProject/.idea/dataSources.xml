@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@localhost" uuid="acb7ad91-5794-4600-a31a-0e0d5193adbe">
+    <data-source source="LOCAL" name="MariaDB" uuid="2189fa76-9072-45a4-a74b-9bcf8ee7608e">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="Mariadb" uuid="a25cea9f-22fd-47c9-b6b1-5efc8c007fde">
-      <driver-ref>mariadb</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>pymysql:mariadb://localhost:3306/baseball</jdbc-url>
+      <jdbc-url>jdbc:mariadb:file:$PROJECT_DIR$/baseball.sql</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

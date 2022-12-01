@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="f85c0052-572f-49aa-a57d-4782c62d08ad" name="MariaDB Mapping">
+      <data-sources db="acb7ad91-5794-4600-a31a-0e0d5193adbe" ddl="ea5a19d7-19d6-482a-a7c9-d0475b80208c" />
+    </mapping>
+  </component>
+</project>
