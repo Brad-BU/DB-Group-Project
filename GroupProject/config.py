@@ -1,7 +1,5 @@
 import os
 import csi3335 as cfg
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))

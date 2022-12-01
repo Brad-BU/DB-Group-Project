@@ -5,23 +5,25 @@
 {% else %}
     <h1>Welcome to 2B || !2B Baseball DataBase!</h1>
 {% endif %}
+<form class="dropdown">
+    <select name="select1" class="dropbtn"> <!-- note the name -->
+        <option value="None" class="dropdown-content">Select Team</option>
+        <option value="T1" class="dropdown-content">Team 1</option>
+        <option value="T2" class="dropdown-content">Team 2</option>
+        <option value="T3" class="dropdown-content">Team 3</option>
+        <option value="T4" class="dropdown-content">Team 4</option>
+    </select>
+</form>
 
-<div class="dropdown">
-  <button class="dropbtn">Team Name</button>
-  <div class="dropdown-content">
-    <a href="#">Link 1</a>
-    <a href="#">Link 2</a>
-    <a href="#">Link 3</a>
-  </div>
-</div>
+<form class = "dropdown">
+    <select name="select2" class="dropbtn"> <!-- note the name -->
+        <option value="None" class="dropdown-content">Select Year</option>
+        <option value="Y1" class="dropdown-content">Year 1</option>
+        <option value="Y2" class="dropdown-content">Year 2</option>
+        <option value="Y3" class="dropdown-content">Year 3</option>
+        <option value="Y4" class="dropdown-content">Year 4</option>
+    </select>
+</form>
 
-<div class="dropdown">
-  <button class="dropbtn">Year</button>
-  <div class="dropdown-content">
-    <a href="#">Link 1</a>
-    <a href="#">Link 2</a>
-    <a href="#">Link 3</a>
-  </div>
-</div>
 
 {% endblock %}

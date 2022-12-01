@@ -13,6 +13,8 @@ def index():
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema
+    select = request.form.get('val')
+    print(select)
     return render_template('index.html', title=title)
 
 
