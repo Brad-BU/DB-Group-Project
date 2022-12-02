@@ -43,14 +43,17 @@ def index():
         else:
             temp = str(current_user)
             temp = temp.split(' ')
-            u = UserActions()
-            u.userId = temp[0]
-            u.username = temp[1]
-            u.search_filter0 = request.form.get('select1')
-            u.search_filter1 = request.form.get('select2')
+            user_action = UserActions()
+            user_action.userId = temp[0]
+            user_action.username = temp[1]
+            user_action.search_filter0 = request.form.get('select1')
+            user_action.search_filter1 = request.form.get('select2')
             print(request.form.get('select1'))
-            u.result = 'result'
-            u.datetime = str(datetime.now())
+            user_action.result = 'test'
+            user_action.datetime = str(datetime.now())
+            # uncomment to submit to the database
+            # db.session.add(user_action)
+            # db.session.commit()
             return render_template('searchResults.html', team_data=team_data)
     return render_template('index.html', title=title, team_data=team_data, year_data=year_data)
 
@@ -102,12 +105,37 @@ def register():
 @app.route('/admin')
 @login_required
 def admin():
-    headings = ("ID", "Username", "Search: Team Name",
-                "Search: Year", "Result", "Time", "Date")
-    data = ()
-    return render_template('adminView.html', headings=headings, data=data)
+    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
+                          db=cfg.mysql['database'])
+    cur = con.cursor()
+    sql = "select * from useractions;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    user_data = []
+    for td in temp:
+        for t in td:
+            t = str(t)
+            user_data.append(t)
+    headings = ("ID",
+                "Username",
+                "First Filter",
+                "Second Filter",
+                "Result",
+                "Time & Date")
+    return render_template('adminView.html', headings=headings, user_data=user_data)
 
 
-@app.route('/results', methods=['POST', 'GET'])
-def submit():
-    return render_template('searchResults.html')
+# @app.route('/results', methods=['POST', 'GET'])
+# def submit():
+#     return render_template('searchResults.html')
+#
+# def generate_result():
+#     try:
+#         sql = ""
+#         cur.execute(sql)
+#         return cur.fetchall()
+#     except Exception:
+#         con.rollback()
+#         print("Database exception.")
+#         raise
+
