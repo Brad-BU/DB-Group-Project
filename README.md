@@ -15,7 +15,7 @@ Set up and start venv (mac): \
 python3 -m venv venv \
 source venv/bin/activate
 
-Required Python Packages:
+Required Python Packages:\
 pip install flask \
 pip install flask-sqlalchemy \
 pip install flask-migrate \
