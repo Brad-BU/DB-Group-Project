@@ -23,7 +23,7 @@ pip install flask-wtf \
 pip install flask-login \
 pip install email-validator
 
-# What we Did
+# What we Did First
 After installing all packages above, we modfied the baseball database by running the following commands.
 
 
