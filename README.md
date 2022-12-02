@@ -1,4 +1,4 @@
-# DB-Group-Project
+# CSI 3335 DB Group Project: Team Info
 Team Name: 2B || !2B
 
 Team Members:
@@ -7,6 +7,7 @@ Team Members:
 - Josh Wilson
 - William Ding
 
+# Prerequisites
 Admin Username/Password:
 - Username: admin
 - Password: password1234
@@ -45,3 +46,8 @@ search_filter1 varchar(64) not null, \
 result varchar(64) not null, \
 datetime varchar(64) not null \
 );
+
+# Websites used to update Database
+https://www.baseball-reference.com/leagues/majors/2022.shtml
+
+
