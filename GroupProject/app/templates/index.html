@@ -9,19 +9,17 @@
     <form class="dropdown" method="POST" action="">
     <select id="select1" name="select1" class="dropbtn"> <!-- note the name -->
         <option value="None" class="dropdown-content">Select Team</option>
-        <option value="T1" class="dropdown-content">Team 1</option>
-        <option value="T2" class="dropdown-content">Team 2</option>
-        <option value="T3" class="dropdown-content">Team 3</option>
-        <option value="T4" class="dropdown-content">Team 4</option>
+        {% for data in team_data %}
+        <option value="{{data}}" class="dropdown-content">{{data}}</option>
+        {% endfor %}
     </select>
     <select name="select2" class="dropbtn"> <!-- note the name -->
         <option value="None" class="dropdown-content">Select Year</option>
-        <option value="Y1" class="dropdown-content">Year 1</option>
-        <option value="Y2" class="dropdown-content">Year 2</option>
-        <option value="Y3" class="dropdown-content">Year 3</option>
-        <option value="Y4" class="dropdown-content">Year 4</option>
+        {% for data in year_data %}
+        <option value="{{data}}" class="dropdown-content">{{data}}</option>
+        {% endfor %}
     </select>
-        <input type="submit" value="Submit">
+        <input type="submit" name="Submit" value="Submit">
 </form>
 </div>
 

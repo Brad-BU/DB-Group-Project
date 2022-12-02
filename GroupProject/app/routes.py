@@ -1,3 +1,4 @@
+import pymysql
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, current_user, logout_user, login_required
@@ -5,12 +6,34 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm
 from app.models import User, UserActions
 from datetime import datetime
+import csi3335 as cfg
+
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
+                          db=cfg.mysql['database'])
+    cur = con.cursor()
+    sql = "select distinct team_name from teamsupd;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    team_data = []
+    for td in temp:
+        for t in td:
+            t = str(t)
+            team_data.append(t)
+
+    sql = "select distinct yearid from teamsupd order by yearid desc;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    year_data = []
+    for yd in temp:
+        for y in yd:
+            y = str(y)
+            year_data.append(y)
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema
@@ -25,10 +48,11 @@ def index():
             u.username = temp[1]
             u.search_filter0 = request.form.get('select1')
             u.search_filter1 = request.form.get('select2')
+            print(request.form.get('select1'))
             u.result = 'result'
             u.datetime = str(datetime.now())
-            return render_template('searchResults.html')
-    return render_template('index.html', title=title)
+            return render_template('searchResults.html', team_data=team_data)
+    return render_template('index.html', title=title, team_data=team_data, year_data=year_data)
 
 
 @app.route('/login', methods=['GET', 'POST'])

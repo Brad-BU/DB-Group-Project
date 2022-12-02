@@ -35,6 +35,10 @@ class UserActions(db.Model, Base):
     datetime = db.Column(db.String(64), index=True)
 
 
+
+
+
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
