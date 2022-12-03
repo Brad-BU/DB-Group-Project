@@ -15,7 +15,39 @@ import csi3335 as cfg
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+<<<<<<< HEAD
     form = MainForm()
+=======
+    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
+                          db=cfg.mysql['database'])
+    cur = con.cursor()
+    sql = "select distinct team_name from teamsupd;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    team_data = []
+    for td in temp:
+        for t in td:
+            t = str(t)
+            team_data.append(t)
+
+    sql = "select distinct yearid from teamsupd order by yearid desc;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    year_data = []
+    for yd in temp:
+        for y in yd:
+            y = str(y)
+            year_data.append(y)
+
+    sql = "select distinct playerid from people order by playerid asc;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    player_data = []
+    for pd in temp:
+        for p in pd:
+            p = str(p)
+            player_data.append(p)
+>>>>>>> c8d6ac8747b50c5a95315644f6be00c1562696b8
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema
@@ -36,7 +68,7 @@ def index():
             db.session.add(user_action)
             db.session.commit()
             return render_template('searchResults.html', team_data=team_data)
-    return render_template('index.html', title=title, team_data=team_data, year_data=year_data)
+    return render_template('index.html', title=title, team_data=team_data, year_data=year_data, player_data=player_data)
 
 @app.route('/year/<team>')
 def year(team):

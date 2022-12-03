@@ -1,4 +1,21 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>Results</h1>
-{% endblock %}
+<html>
+<link rel="stylesheet" href="/static/styles.css"/>
+  <head>
+      <title>Baseball DataBase</title>
+  </head>
+  <body>
+  	<h1>Results</h1>
+  	<nav>
+    	<div>
+      	2B || !2B:
+      	<a href="{{ url_for('index') }}">Home</a>
+      	<a href="{{ url_for('login') }}">Login</a>
+      	<a href="{{ url_for('logout') }}">Logout</a>
+      	{% if current_user.username == "admin" %}
+      	<a href="{{ url_for('admin') }}">Admin View</a>
+      	{% endif %}
+    	</div>
+    {% block content %}{% endblock %}
+  </nav>
+</body>
+</html>
