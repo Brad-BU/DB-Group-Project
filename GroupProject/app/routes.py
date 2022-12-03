@@ -15,9 +15,7 @@ import csi3335 as cfg
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-<<<<<<< HEAD
     form = MainForm()
-=======
     con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
                           db=cfg.mysql['database'])
     cur = con.cursor()
@@ -47,7 +45,6 @@ def index():
         for p in pd:
             p = str(p)
             player_data.append(p)
->>>>>>> c8d6ac8747b50c5a95315644f6be00c1562696b8
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema

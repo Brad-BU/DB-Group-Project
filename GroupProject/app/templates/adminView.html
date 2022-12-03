@@ -1,7 +1,10 @@
-{% extends "base.html" %}
-{% block content %}
-<h1>Admin View </h1>
+<html>
+<link rel="stylesheet" href="/static/styles.css"/>
+<head>
+      <title>Baseball DataBase</title>
+  </head>
 <body>
+    <h1>Admin View </h1>
     <table class="table">
         <tr class="table__header">
             {% for header in headings %}
@@ -17,4 +20,4 @@
         {% endfor %}
     </table>
 </body>
-{% endblock %}
+</html>
