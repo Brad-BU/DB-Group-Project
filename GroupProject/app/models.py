@@ -42,6 +42,12 @@ class battingUpd(db.Model, Base):
     teamID = db.Column(db.String(7))
     stint = db.Column(db.SmallInteger)
 
+    def __repr__(self):
+        return '{User ID: }'.format(self.userId) + '{ Username: }'.format(self.username) + '{Team: }'.format(search_filter0) + '{Year: }'.format(search_filter1) + '{Result: }'.format(result) + '{Date-time: }'.format(datetime) + '\n'
+
+
+
+
 
 @login.user_loader
 def load_user(id):

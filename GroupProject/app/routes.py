@@ -136,16 +136,13 @@ def admin():
     temp = list(cur.fetchall())
     user_data = []
     for td in temp:
+        s = ""
         for t in td:
             t = str(t)
-            user_data.append(t)
-    headings = ("ID",
-                "Username",
-                "First Filter",
-                "Second Filter",
-                "Result",
-                "Time & Date")
-    return render_template('adminView.html', headings=headings, user_data=user_data)
+            s = s + " " + t
+        user_data.append(s)
+
+    return render_template('adminView.html', user_data=user_data)
 
 
 def generate_result():
