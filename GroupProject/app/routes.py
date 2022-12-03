@@ -1,4 +1,5 @@
 import pymysql
+import string
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, current_user, logout_user, login_required
@@ -7,7 +8,6 @@ from app.forms import LoginForm, RegistrationForm
 from app.models import User, UserActions
 from datetime import datetime
 import csi3335 as cfg
-
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -52,15 +52,16 @@ def index():
         else:
             temp = str(current_user)
             temp = temp.split(' ')
-            u = UserActions()
-            u.userId = temp[0]
-            u.username = temp[1]
-		# may need to add players
-            u.search_filter0 = request.form.get('select1')
-            u.search_filter1 = request.form.get('select2')
-            print(request.form.get('select1'))
-            u.result = 'result'
-            u.datetime = str(datetime.now())
+            user_action = UserActions()
+            user_action.userId = temp[0]
+            user_action.username = temp[1]
+            user_action.search_filter0 = request.form.get('select1')
+            user_action.search_filter1 = request.form.get('select2')
+            user_action.result = str(generate_result())
+            user_action.datetime = str(datetime.now())
+            # uncomment to submit to the database
+            db.session.add(user_action)
+            db.session.commit()
             return render_template('searchResults.html', team_data=team_data)
     return render_template('index.html', title=title, team_data=team_data, year_data=year_data, player_data=player_data)
 
@@ -112,12 +113,79 @@ def register():
 @app.route('/admin')
 @login_required
 def admin():
-    headings = ("ID", "Username", "Search: Team Name",
-                "Search: Year", "Result", "Time", "Date")
-    data = ()
-    return render_template('adminView.html', headings=headings, data=data)
+    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
+                          db=cfg.mysql['database'])
+    cur = con.cursor()
+    sql = "select * from useractions;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    user_data = []
+    for td in temp:
+        for t in td:
+            t = str(t)
+            user_data.append(t)
+    headings = ("ID",
+                "Username",
+                "First Filter",
+                "Second Filter",
+                "Result",
+                "Time & Date")
+    return render_template('adminView.html', headings=headings, user_data=user_data)
 
 
-@app.route('/results', methods=['POST', 'GET'])
-def submit():
-    return render_template('searchResults.html')
+def generate_result():
+    if request.method == 'POST':
+        if request.form['button1'] == 'Submit1':
+            try:
+                # Connect to database
+                con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'],
+                                      password=cfg.mysql['password'],
+                                      db=cfg.mysql['database'])
+                cur = con.cursor()
+                # Generate first portion of data for division standings
+                team = request.form.get('select1')
+                year = request.form.get('select2')
+                sql = '''
+                SELECT DISTINCT team_name, team_w, team_l, lgid
+                FROM teamsupd 
+                WHERE yearid = %s AND team_name = %s;
+                '''
+                cur.execute(sql, [year, team])
+                table = list(cur.fetchall())
+                table = list(table[0])
+                # , (team_w / (team_w + team_l) )
+                w1 = int(table[1])
+                l1 = int(table[2])
+                percent = w1 / (w1 + l1)
+                # Get lg id from team to calculate games behind
+                lgid = table[3]
+                # Get the rest of the needed data for division standings
+                sql = '''
+                SELECT team_name, team_w, team_l
+                FROM teamsupd
+                WHERE yearid = %s AND lgid = %s
+                ORDER BY team_w DESC
+                LIMIT 1;
+                '''
+                # get the games behind the average of the differences between the leading team wins and the trailing team wins,
+                # and the leading teams losses and the trailing team losses
+                cur.execute(sql, [year, lgid])
+                table.append(percent)
+                other = list(cur.fetchall())
+                other = list(other[0])
+                w2 = int(other[1])
+                l2 = int(other[2])
+                # (w2 - w1) + (l2 - l1) / 2
+                games_behind = (abs(w2 - w1) + abs(l2 - l1)) / 2.0
+                table.append(str(games_behind))
+                print(table)
+                print(other)
+                return table
+            except Exception:
+                con.rollback()
+                print("Database exception.")
+                raise
+
+        elif request.form['button2'] == 'Submit2':
+            return 'button2'
+
