@@ -3,7 +3,8 @@
   <head>
       <title>Baseball DataBase</title>
   </head>
-  <body class="background">
+  <body>
+  <nav>
     <div>
       2B || !2B:
       <a href="{{ url_for('index') }}">Home</a>
@@ -14,5 +15,11 @@
       {% endif %}
     </div>
     {% block content %}{% endblock %}
+  </nav>
+  <article>
+    <h1>Creators</h1>
+    <p>We created this, text.</p>
+    <img src="https://miro.medium.com/max/1400/1*QRfisX2pAZtNn3hB10kNKQ.jpeg" alt="Babe Ruth" style="width:720px;height:480px;">
+  </article>
   </body>
 </html>

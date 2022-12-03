@@ -34,6 +34,15 @@ def index():
         for y in yd:
             y = str(y)
             year_data.append(y)
+
+    sql = "select distinct playerid from people order by playerid asc;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+    player_data = []
+    for pd in temp:
+        for p in pd:
+            p = str(p)
+            player_data.append(p)
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema
@@ -54,7 +63,7 @@ def index():
             db.session.add(user_action)
             db.session.commit()
             return render_template('searchResults.html', team_data=team_data)
-    return render_template('index.html', title=title, team_data=team_data, year_data=year_data)
+    return render_template('index.html', title=title, team_data=team_data, year_data=year_data, player_data=player_data)
 
 
 @app.route('/login', methods=['GET', 'POST'])
