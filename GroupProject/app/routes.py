@@ -107,11 +107,15 @@ def admin():
     cur.execute(sql)
     temp = list(cur.fetchall())
     user_data = []
+    cat = ["ID:", "User:", "Team:", "Results:", "Date:", "Time:"]
     for td in temp:
         s = ""
+        count = 0
         for t in td:
-            t = str(t)
-            s = s + " " + t
+            if count != 0:
+                t = str(t)
+                s = s + " " + cat[count-1] + " " + t
+            count = count + 1
         user_data.append(s)
 
     return render_template('adminView.html', user_data=user_data)
