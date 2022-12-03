@@ -33,6 +33,14 @@ class UserActions(db.Model, Base):
     search_filter1 = db.Column(db.String(64), index=True)
     result = db.Column(db.String(64), index=True)
     datetime = db.Column(db.String(64), index=True)
+    
+class battingUpd(db.Model, Base):
+    __tablename__ = "battingUpd"
+    id = db.Column(db.Integer)
+    playerID = db.Column(db.String(9))
+    yearID = db.Column(db.SmallInteger)
+    teamID = db.Column(db.String(7))
+    stint = db.Column(db.SmallInteger)
 
 
 @login.user_loader
