@@ -1,5 +1,4 @@
 import pymysql
-import string
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from werkzeug.urls import url_parse
 from flask_login import login_user, current_user, logout_user, login_required
@@ -18,27 +17,6 @@ def index():
     form = MainForm()
     temp = list(get_years("Altoona Mountain City"))
     form.year.choices = temp
-    team_data = []
-    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
-                          db=cfg.mysql['database'])
-    cur = con.cursor()
-    sql = "select distinct yearid from teamsupd order by yearid desc;"
-    cur.execute(sql)
-    temp = list(cur.fetchall())
-    year_data = []
-    for yd in temp:
-        for y in yd:
-            y = str(y)
-            year_data.append(y)
-
-    sql = "select distinct playerid from people order by playerid asc;"
-    cur.execute(sql)
-    temp = list(cur.fetchall())
-    player_data = []
-    for pd in temp:
-        for p in pd:
-            p = str(p)
-            player_data.append(p)
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema
@@ -50,12 +28,13 @@ def index():
         user_action.username = temp[1]
         user_action.search_filter0 = form.team.data
         user_action.search_filter1 = form.year.data
-        user_action.result = str(generate_result(form))
+        results = str(generate_result(form))
+        user_action.result = results
         user_action.datetime = str(datetime.now())
         db.session.add(user_action)
         db.session.commit()
-        return render_template('searchResults.html')
-    return render_template('index.html', title=title, team_data=team_data, year_data=year_data, player_data=player_data, form=form)
+        return render_template('searchResults.html', results=results)
+    return render_template('index.html', title=title, form=form)
 
 @app.route('/year/<team>')
 def year(team):
@@ -192,8 +171,6 @@ def generate_result(form):
                     # (w2 - w1) + (l2 - l1) / 2
                     games_behind = (abs(w2 - w1) + abs(l2 - l1)) / 2.0
                     table.append(str(games_behind))
-                    print(table)
-                    print(other)
                     return table
                 ######################
                 # Get the rest of the needed data for division standings
