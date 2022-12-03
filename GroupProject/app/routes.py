@@ -161,7 +161,7 @@ def generate_result():
                 team = request.form.get('select1')
                 year = request.form.get('select2')
                 sql = '''
-                SELECT DISTINCT team_name, team_w, team_l, lgid
+                SELECT DISTINCT team_name, team_w, team_l, lgid, divid
                 FROM teamsupd 
                 WHERE yearid = %s AND team_name = %s;
                 '''
@@ -174,17 +174,18 @@ def generate_result():
                 percent = w1 / (w1 + l1)
                 # Get lg id from team to calculate games behind
                 lgid = table[3]
+                divid = table[4]
                 # Get the rest of the needed data for division standings
                 sql = '''
                 SELECT team_name, team_w, team_l
                 FROM teamsupd
-                WHERE yearid = %s AND lgid = %s
+                WHERE yearid = %s AND lgid = %s AND divid = %s
                 ORDER BY team_w DESC
                 LIMIT 1;
                 '''
                 # get the games behind the average of the differences between the leading team wins and the trailing team wins,
                 # and the leading teams losses and the trailing team losses
-                cur.execute(sql, [year, lgid])
+                cur.execute(sql, [year, lgid, divid])
                 table.append(percent)
                 other = list(cur.fetchall())
                 other = list(other[0])
