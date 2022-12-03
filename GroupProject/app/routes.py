@@ -16,7 +16,7 @@ import csi3335 as cfg
 @login_required
 def index():
     form = MainForm()
-    temp = list(get_years("Arizona Diamondbacks"))
+    temp = list(get_years("Altoona Mountain City"))
     form.year.choices = temp
     team_data = []
     con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
@@ -43,28 +43,23 @@ def index():
     # this is where you would add the user-action class and
     # create the data to add to the schema
     if request.method == "POST":
-        if request.form['select1'] == 'None' or request.form['select2'] == 'None':
-            flash('Must select category for each')  # why doesn't this work
-        else:
-            temp = str(current_user)
-            temp = temp.split(' ')
-            user_action = UserActions()
-            user_action.userId = temp[0]
-            user_action.username = temp[1]
-            user_action.search_filter0 = request.form.get('select1')
-            user_action.search_filter1 = request.form.get('select2')
-            user_action.result = str(generate_result())
-            user_action.datetime = str(datetime.now())
-            # uncomment to submit to the database
-            db.session.add(user_action)
-            db.session.commit()
-            return render_template('searchResults.html')
+        temp = str(current_user)
+        temp = temp.split(' ')
+        user_action = UserActions()
+        user_action.userId = temp[0]
+        user_action.username = temp[1]
+        user_action.search_filter0 = form.team.data
+        user_action.search_filter1 = form.year.data
+        user_action.result = str(generate_result(form))
+        user_action.datetime = str(datetime.now())
+        db.session.add(user_action)
+        db.session.commit()
+        return render_template('searchResults.html')
     return render_template('index.html', title=title, team_data=team_data, year_data=year_data, player_data=player_data, form=form)
 
 @app.route('/year/<team>')
 def year(team):
     year_data = get_years(team=team)
-    print(year_data)
     return jsonify({'years':year_data})
 
 def get_years(team):
@@ -108,7 +103,6 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # prevents an already logged-in user from going to login page
@@ -123,7 +117,6 @@ def register():
         flash("Congratulations! You are now a registered user!")
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
 
 @app.route('/admin')
 @login_required
@@ -145,7 +138,7 @@ def admin():
     return render_template('adminView.html', user_data=user_data)
 
 
-def generate_result():
+def generate_result(form):
     if request.method == 'POST':
         if request.form['button1'] == 'Submit1':
             try:
@@ -155,8 +148,10 @@ def generate_result():
                                       db=cfg.mysql['database'])
                 cur = con.cursor()
                 # Generate first portion of data for division standings
-                team = request.form.get('select1')
-                year = request.form.get('select2')
+                team = form.team.data
+                year = form.year.data
+                print(team)
+                print(year)
                 sql = '''
                 SELECT DISTINCT team_name, team_w, team_l, lgid, divid
                 FROM teamsupd 
@@ -164,26 +159,50 @@ def generate_result():
                 '''
                 cur.execute(sql, [year, team])
                 table = list(cur.fetchall())
+                print(table)
                 table = list(table[0])
                 # , (team_w / (team_w + team_l) )
                 w1 = int(table[1])
                 l1 = int(table[2])
                 percent = w1 / (w1 + l1)
+                table.append(percent)
                 # Get lg id from team to calculate games behind
                 lgid = table[3]
                 divid = table[4]
+                if divid is not None:
+                    # Get the rest of the needed data for division standings
+                    sql = '''
+                            SELECT team_name, team_w, team_l
+                            FROM teamsupd
+                            WHERE yearid = %s AND lgid = %s AND divid = %s
+                            ORDER BY team_w DESC
+                            LIMIT 1;
+                          '''
+                    # get the games behind the average of the differences between the leading team wins and the trailing team wins,
+                    # and the leading teams losses and the trailing team losses
+                    cur.execute(sql, [year, lgid, divid])
+                    other = list(cur.fetchall())
+                    other = list(other[0])
+                    w2 = int(other[1])
+                    l2 = int(other[2])
+                    # (w2 - w1) + (l2 - l1) / 2
+                    games_behind = (abs(w2 - w1) + abs(l2 - l1)) / 2.0
+                    table.append(str(games_behind))
+                    print(table)
+                    print(other)
+                    return table
+                ######################
                 # Get the rest of the needed data for division standings
                 sql = '''
-                SELECT team_name, team_w, team_l
-                FROM teamsupd
-                WHERE yearid = %s AND lgid = %s AND divid = %s
-                ORDER BY team_w DESC
-                LIMIT 1;
-                '''
+                        SELECT team_name, team_w, team_l
+                        FROM teamsupd
+                        WHERE yearid = %s AND lgid = %s
+                        ORDER BY team_w DESC
+                        LIMIT 1;
+                      '''
                 # get the games behind the average of the differences between the leading team wins and the trailing team wins,
                 # and the leading teams losses and the trailing team losses
-                cur.execute(sql, [year, lgid, divid])
-                table.append(percent)
+                cur.execute(sql, [year, lgid])
                 other = list(cur.fetchall())
                 other = list(other[0])
                 w2 = int(other[1])
