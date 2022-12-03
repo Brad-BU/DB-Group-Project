@@ -1,28 +1,27 @@
 <html>
 <link rel="stylesheet" href="/static/styles.css"/>
-<head>
+  <head>
       <title>Baseball DataBase</title>
   </head>
-<div>
+<body>
+  <nav>
+    <div>
       2B || !2B:
       <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('login') }}">Login</a>
       <a href="{{ url_for('logout') }}">Logout</a>
+      {% if current_user.username == "admin" %}
+      <a href="{{ url_for('admin') }}">Admin View</a>
+      {% endif %}
     </div>
-<body>
-    <h1>Admin View </h1>
-    <table class="table">
-        <tr class="table__header">
-            {% for header in headings %}
-            <th class="table__cell">{{ header }}</th>
-            {% endfor %}
-        </tr>
-        {% for row in user_data %}
-            <tr class="table__row">
-                {% for cell in row %}
-                <td class="table__cell">{{ cell }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
+  </nav>
+<section>
+<article>
+<h1>Admin View </h1>
+	{% for row in user_data %}
+    <p>{{ row }}</p>
+      {% endfor %}
+</article>
+</section>
 </body>
 </html>
