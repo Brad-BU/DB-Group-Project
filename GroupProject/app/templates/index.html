@@ -16,31 +16,63 @@
     </div>
   </nav>
     <h1>Hi, {{current_user.username}}!, welcome to 2B || !2B Baseball DataBase!</h1>
-<div class="center">
-    <p>Select a team and a year to use the query, player is optional.</p>
-    <p>Selecting a player currently does nothing, work on later.</p>
-    <form class="dropdown" method="POST" action="">
-    <select id="select1" name="select1" class="dropbtn"> <!-- note the name -->
-        <option value="None" class="dropdown-content">Select Team</option>
-        {% for data in team_data %}
-        <option value="{{data}}" class="dropdown-content">{{data}}</option>
-        {% endfor %}
-    </select>
-    <select name="select2" class="dropbtn"> <!-- note the name -->
-        <option value="None" class="dropdown-content">Select Year</option>
-        {% for data in year_data %}
-        <option value="{{data}}" class="dropdown-content">{{data}}</option>
-        {% endfor %}
-    </select>
-    <select name="select3" class="dropbtn"> <!-- note the name -->
-        <option value="None" class="dropdown-content">Select Player</option>
-        {% for data in player_data %}
-        <option value="{{data}}" class="dropdown-content">{{data}}</option>
-        {% endfor %}
-    </select>
-        <input type="submit" name="button1" value="Submit1">
-        <input type="submit" name="button2" value="Submit2">
+
+  <p>To display the standings for the division select the team and year</p>
+<form class="dropdown" method="POST">
+    {{ form.team }}
+    {{ form.year }}
+    <input type="submit" name="button1" value="Submit1">
 </form>
-</div>
+
+<script>
+    var team_select = document.getElementById("team");
+    var year_select = document.getElementById("year");
+    team_select.onchange = function (){
+        var team = team_select.value;
+        fetch('/year/' + team).then(function (response){
+            response.json().then(function (data){
+                let optionHTML = '';
+                for(const y of data.years ){
+                    optionHTML+='<option value="' + y + '">' + y + '</option>';
+                }
+                year_select.innerHTML = optionHTML;
+            })
+        });
+    }
+</script>
+
+
+
+
+
+
+
+
+<!--<div class="center">-->
+<!--    <p>Select a team and a year to use the query, player is optional.</p>-->
+<!--    <p>Selecting a player currently does nothing, work on later.</p>-->
+<!--    <form class="dropdown" method="POST" action="">-->
+<!--    <select id="select1" name="select1" class="dropbtn"> &lt;!&ndash; note the name &ndash;&gt;-->
+<!--        <option value="None" class="dropdown-content">Select Team</option>-->
+<!--        {% for data in team_data %}-->
+<!--        <option value="{{data}}" class="dropdown-content">{{data}}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+<!--    <select name="select2" class="dropbtn"> &lt;!&ndash; note the name &ndash;&gt;-->
+<!--        <option value="None" class="dropdown-content">Select Year</option>-->
+<!--        {% for data in year_data %}-->
+<!--        <option value="{{data}}" class="dropdown-content">{{data}}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+<!--    <select name="select3" class="dropbtn"> &lt;!&ndash; note the name &ndash;&gt;-->
+<!--        <option value="None" class="dropdown-content">Select Player</option>-->
+<!--        {% for data in player_data %}-->
+<!--        <option value="{{data}}" class="dropdown-content">{{data}}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+<!--        <input type="submit" name="button1" value="Submit1">-->
+<!--        <input type="submit" name="button2" value="Submit2">-->
+<!--</form>-->
+<!--</div>-->
 </body>
 </html>
