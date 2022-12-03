@@ -34,7 +34,8 @@ class UserActions(db.Model, Base):
     result = db.Column(db.String(64), index=True)
     datetime = db.Column(db.String(64), index=True)
 
-
+    def __repr__(self):
+        return '{User ID: }'.format(self.userId) + '{ Username: }'.format(self.username) + '{Team: }'.format(search_filter0) + '{Year: }'.format(search_filter1) + '{Result: }'.format(result) + '{Date-time: }'.format(datetime) + '\n'
 
 
 
