@@ -10,8 +10,10 @@
       <a href="{{ url_for('index') }}">Home</a>
       <a href="{{ url_for('login') }}">Login</a>
       <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+    <div>
       {% if current_user.username == "admin" %}
-      <a href="{{ url_for('admin') }}">Admin View</a>
+      <a style="font-size:30px" href="{{ url_for('admin') }}">Admin View</a>
       {% endif %}
     </div>
   </nav>
@@ -21,6 +23,7 @@
 	{% for row in user_data %}
     <p>{{ row }}</p>
       {% endfor %}
+      <a style="font-size:20px" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Export to csv</a>
 </article>
 </section>
 </body>
