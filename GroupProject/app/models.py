@@ -33,8 +33,6 @@ class UserActions(db.Model, Base):
     search_filter1 = db.Column(db.String(64), index=True)
     result = db.Column(db.String(64), index=True)
     datetime = db.Column(db.String(64), index=True)
-    
-
 
 
 @login.user_loader
