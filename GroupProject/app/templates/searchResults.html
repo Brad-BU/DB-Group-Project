@@ -12,14 +12,14 @@
       	<a href="{{ url_for('index') }}">Home</a>
       	<a href="{{ url_for('login') }}">Login</a>
       	<a href="{{ url_for('logout') }}">Logout</a>
-    </div>
-    <div>
-      {% if current_user.username == "admin" %}
+            {% if current_user.username == "admin" %}
       <a style="font-size:30px" href="{{ url_for('admin') }}">Admin View</a>
       {% endif %}
     </div>
+
       {% block content %}{% endblock %}
       </nav>
+    <p>{{ results }}</p>
       <article>
       </article>
 <section>

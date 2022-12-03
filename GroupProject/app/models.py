@@ -38,9 +38,6 @@ class UserActions(db.Model, Base):
         return '{User ID: }'.format(self.userId) + '{ Username: }'.format(self.username) + '{Team: }'.format(search_filter0) + '{Year: }'.format(search_filter1) + '{Result: }'.format(result) + '{Date-time: }'.format(datetime) + '\n'
 
 
-
-
-
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
