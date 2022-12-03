@@ -1,7 +1,28 @@
+import pymysql
+import string
+import csi3335 as cfg
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app.models import User
+
+
+class MainForm(FlaskForm):
+    team_data = []
+    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
+                          db=cfg.mysql['database'])
+    cur = con.cursor()
+    sql = "select distinct team_name from teamsupd;"
+    cur.execute(sql)
+    temp = list(cur.fetchall())
+
+    for td in temp:
+        for t in td:
+            t = str(t)
+            team_data.append(t)
+
+    team = SelectField('Team', choices=team_data)
+    year = SelectField('Year', choices=[])
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

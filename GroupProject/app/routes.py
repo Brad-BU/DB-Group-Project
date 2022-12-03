@@ -4,36 +4,18 @@ from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, MainForm
 from app.models import User, UserActions
 from datetime import datetime
 import csi3335 as cfg
+
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
-                          db=cfg.mysql['database'])
-    cur = con.cursor()
-    sql = "select distinct team_name from teamsupd;"
-    cur.execute(sql)
-    temp = list(cur.fetchall())
-    team_data = []
-    for td in temp:
-        for t in td:
-            t = str(t)
-            team_data.append(t)
-
-    sql = "select distinct yearid from teamsupd order by yearid desc;"
-    cur.execute(sql)
-    temp = list(cur.fetchall())
-    year_data = []
-    for yd in temp:
-        for y in yd:
-            y = str(y)
-            year_data.append(y)
+    form = MainForm()
     title = "Home"
     # this is where you would add the user-action class and
     # create the data to add to the schema
@@ -56,6 +38,20 @@ def index():
             return render_template('searchResults.html', team_data=team_data)
     return render_template('index.html', title=title, team_data=team_data, year_data=year_data)
 
+@app.route('/year/<team>')
+def year(team):
+    year_data = []
+    con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
+                          db=cfg.mysql['database'])
+    cur = con.cursor()
+    sql = "select distinct yearid from teamsupd where team_name = %s order by yearid desc;"
+    cur.execute(sql, [team])
+    temp = list(cur.fetchall())
+    for yd in temp:
+        for y in yd:
+            y = str(y)
+            year_data.append(y)
+    return jsonif({'years':year_data})
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
