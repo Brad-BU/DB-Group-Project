@@ -1,0 +1,11 @@
+4,2,Houston Astros,Philadelphia Phillies,WS
+4,0,Houston Astros,New York Yankees,ALCS
+4,1,Philadelphia Phillies,San Diego Padres,ALCS
+3,2,New York Yankees,Cleveland Guardians,ALDS
+3,0,Houston Astros,Seattle Mariners,ALDS
+3,1,Philadelphia Phillies,Atlanta Braves,ALDS
+3,1,San Diego Padres,Los Angeles Dodgers,ALDS
+2,0,Cleveland Guardians,Tampa Bay Rays,ALWC
+2,0,Seattle Mariners,Toronto Blue Jays,ALWC
+2,1,San Diego Padres,New York Mets,NLWC
+2,0,Philadelphia Phillies,St. Louis Cardinals,NLWC
