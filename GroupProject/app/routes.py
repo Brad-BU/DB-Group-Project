@@ -129,19 +129,6 @@ def admin():
         user_data.append(u)
         print(u)
 
-
-    #cat = ["ID:", "User:", "Team:", "Results:", "Date:", "Time:"]
-    #for td in temp:
-    #    s = ""
-    #    count = 0
-    #   for t in td:
-    #       if count != 0:
-    #            t = str(t)
-    #            t = t.replace(',', '')
-    #            s = s + " " + cat[count-1] + " " + t + " ||"
-    #        count = count + 1
-    #    user_data.append(s)
-
     userCount = Counter(i[2] for i in temp)
 
     return render_template('adminView.html', user_data=user_data, userCount=userCount)
