@@ -69,6 +69,7 @@ JavaScript
 
 # Extra Credit
 Create a new user function \
-Dynamic Dropdown boxes
+Dynamic dropdown boxes \
+Remember me check box at login
 
 
