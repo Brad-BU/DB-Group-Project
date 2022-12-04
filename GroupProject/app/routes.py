@@ -116,9 +116,8 @@ def admin():
     cur.execute(sql)
     temp = list(cur.fetchall())
     user_data = []
-    t = 0
 
-    while t < len(temp):
+    for t in range(len(temp)):
         tem = list(temp[t])
         u = UserActions()
         u.userId = tem[1]
@@ -129,7 +128,6 @@ def admin():
         u.datetime = tem[6]
         user_data.append(u)
         print(u)
-        t += 1
 
 
     #cat = ["ID:", "User:", "Team:", "Results:", "Date:", "Time:"]
@@ -173,7 +171,7 @@ def generate_result(form):
                     return table
                 print(table)
                 table = list(table[0])
-                final_result.append("|| Team: ")
+                final_result.append("Team: ")
                 final_result.append(table[0])
                 final_result.append("|| Wins: ")
                 final_result.append(table[1])
@@ -276,7 +274,7 @@ def generate_result(form):
                 table.append(playoff[0])
                 table.append(playoff[1])
                 table.append(playoff[2])
-                final_result.append("Playoff Data: ")
+                final_result.append("Playoff Data - ")
                 final_result.append("Wins: ")
                 final_result.append(playoff[0])
                 final_result.append("|| Losses: ")

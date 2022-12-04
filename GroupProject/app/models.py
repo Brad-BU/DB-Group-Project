@@ -35,7 +35,7 @@ class UserActions(db.Model, Base):
     datetime = db.Column(db.String(64), index=True)
 
     def __repr__(self):
-        return f"User ID: {self.userId} || Username: {self.username} || Filter1: {self.search_filter0} || Filter2: {self.search_filter1} || Result: {self.result} || Date-time: {self.datetime}"
+        return f"User ID: {self.userId} || Username: {self.username} || Filter1: {self.search_filter0} || Filter2: {self.search_filter1} || Result - {self.result} || Date-time: {self.datetime}"
 
 
 @login.user_loader
