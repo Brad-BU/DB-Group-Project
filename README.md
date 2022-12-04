@@ -65,7 +65,12 @@ CSS \
 JavaScript
 
 # Minimum Requirements
-
+- Added user support to the database. With a user name, email, and encrypted password.
+- An SQL program to create the user table(s)
+- Web/database app that requires users to login into the system.
+- Once logged in, the user may provide a team name and a year via drop down menu requesting the team name, and then a drop down menu with the valid years. The system will log the selections made by a user.
+- A web page to display the standings for the division for the team and year submitted. If the submitted team made the playoffs, additional information regarding the playoffs should be included.
+- An admin user (password should be included in your readme file). The admin user can see the logged information for each user and the totals for all users.
 
 # Extra Credit
 Create a new user function \
