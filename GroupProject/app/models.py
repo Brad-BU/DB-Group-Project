@@ -35,8 +35,7 @@ class UserActions(db.Model, Base):
     datetime = db.Column(db.String(64), index=True)
 
     def __repr__(self):
-        return '{User ID: }'.format(self.userId) + '{ Username: }'.format(self.username) + '{Filter1: }'.format(self.search_filter0)\
-               + '{Filter2: }'.format(self.search_filter1) + '{Result: }'.format(self.result) + '{Date-time: }'.format(self.datetime) + '\n'
+        return f"User ID: {self.userId} || Username: {self.username} || Filter1: {self.search_filter0} || Filter2: {self.search_filter1} || Result: {self.result} || Date-time: {self.datetime}"
 
 
 @login.user_loader

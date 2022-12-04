@@ -116,30 +116,33 @@ def admin():
     cur.execute(sql)
     temp = list(cur.fetchall())
     user_data = []
+    t = 0
 
-
-    temp = list(temp[0])
-    for t in temp
+    while t < len(temp):
+        tem = list(temp[t])
         u = UserActions()
-        u.userId = t.id
-        u.username = t.username
-        u.search_filter0 = t.sear
+        u.userId = tem[1]
+        u.username = tem[2]
+        u.search_filter0 = tem[3]
+        u.search_filter1 = tem[4]
+        u.result = tem[5]
+        u.datetime = tem[6]
         user_data.append(u)
-    print()
-    # user_data.append(UserActions())
-    # user.userid =
+        print(u)
+        t += 1
 
-    cat = ["ID:", "User:", "Team:", "Results:", "Date:", "Time:"]
-    for td in temp:
-        s = ""
-        count = 0
-        for t in td:
-            if count != 0:
-                t = str(t)
-                t = t.replace(',', '')
-                s = s + " " + cat[count-1] + " " + t + " ||"
-            count = count + 1
-        user_data.append(s)
+
+    #cat = ["ID:", "User:", "Team:", "Results:", "Date:", "Time:"]
+    #for td in temp:
+    #    s = ""
+    #    count = 0
+    #   for t in td:
+    #       if count != 0:
+    #            t = str(t)
+    #            t = t.replace(',', '')
+    #            s = s + " " + cat[count-1] + " " + t + " ||"
+    #        count = count + 1
+    #    user_data.append(s)
 
     userCount = Counter(i[2] for i in temp)
 
