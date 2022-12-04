@@ -34,7 +34,7 @@ create table User( \
 id int primary key auto_increment, \ 
 username varchar(64) not null unique key, \
 email varchar(64) not null unique key, \
-password_hash varchar(128) not null \
+password_hash varchar(256) not null \
 );
 
 create table UserActions( \
