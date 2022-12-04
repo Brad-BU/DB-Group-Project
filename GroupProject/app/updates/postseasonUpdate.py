@@ -20,7 +20,7 @@ try:
     teamSIdentL char(3)
     );'''
     cur.execute(sql)
-    sql = '''IN-SERT INTO seriespostUpd (ID, teamSIdentW, teamSIdentL, yearID, round, wins, losses, ties) 
+    sql = '''INSERT INTO seriespostUpd (ID, teamSIdentW, teamSIdentL, yearID, round, wins, losses, ties) 
     SELECT ID, teamIDwinner, teamIDloser, yearID, round, wins, loses, ties FROM seriespost ORDER BY ID'''
     cur.execute(sql)
 

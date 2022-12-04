@@ -31,7 +31,7 @@ class UserActions(db.Model, Base):
     username = db.Column(db.String(64), index=True)
     search_filter0 = db.Column(db.String(64), index=True)
     search_filter1 = db.Column(db.String(64), index=True)
-    result = db.Column(db.String(64), index=True)
+    result = db.Column(db.String(256), index=True)
     datetime = db.Column(db.String(64), index=True)
 
     def __repr__(self):

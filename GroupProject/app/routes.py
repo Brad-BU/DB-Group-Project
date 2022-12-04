@@ -29,11 +29,18 @@ def index():
         user_action.search_filter0 = form.team.data
         user_action.search_filter1 = form.year.data
         results = str(generate_result(form))
+        results = results.replace("','", "")
+        results = results.replace("'", "")
+        results = results.replace(" ,", "")
+        results = results.replace("[", "")
+        results = results.replace("]", "")
         user_action.result = results
         user_action.datetime = str(datetime.now())
         db.session.add(user_action)
         db.session.commit()
-        return render_template('searchResults.html', results=results)
+        playoff = results[results.index("Playoff Data"):len(results)]
+        results = results[0:results.index(" Playoff Data")-1]
+        return render_template('searchResults.html', results=results, playoff=playoff)
     return render_template('index.html', title=title, form=form)
 
 @app.route('/year/<team>')
@@ -125,6 +132,7 @@ def generate_result(form):
     if request.method == 'POST':
         if request.form['button1'] == 'Submit1':
             try:
+                final_result = list()
                 # Connect to database
                 con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'],
                                       password=cfg.mysql['password'],
@@ -133,25 +141,34 @@ def generate_result(form):
                 # Generate first portion of data for division standings
                 team = form.team.data
                 year = form.year.data
-                print(team)
-                print(year)
                 sql = '''
-                SELECT DISTINCT team_name, team_w, team_l, lgid, divid
+                SELECT DISTINCT team_name, team_w, team_l, lgid, divid, teamid
                 FROM teamsupd 
                 WHERE yearid = %s AND team_name = %s;
                 '''
                 cur.execute(sql, [year, team])
                 table = list(cur.fetchall())
+                if len(table) == 0:
+                    return table
                 print(table)
                 table = list(table[0])
+                final_result.append("Team: ")
+                final_result.append(table[0])
+                final_result.append(", Wins: ")
+                final_result.append(table[1])
+                final_result.append(", Losses: ")
+                final_result.append(table[2])
                 # , (team_w / (team_w + team_l) )
                 w1 = int(table[1])
                 l1 = int(table[2])
                 percent = w1 / (w1 + l1)
+                final_result.append(", Win%: ")
+                final_result.append(str(percent))
                 table.append(percent)
                 # Get lg id from team to calculate games behind
                 lgid = table[3]
                 divid = table[4]
+                team_id = table[5]
                 if divid is not None:
                     # Get the rest of the needed data for division standings
                     sql = '''
@@ -171,8 +188,35 @@ def generate_result(form):
                     # (w2 - w1) + (l2 - l1) / 2
                     games_behind = (abs(w2 - w1) + abs(l2 - l1)) / 2.0
                     table.append(str(games_behind))
-                    return table
-                ######################
+                    final_result.append(", Games Behind: ")
+                    final_result.append(str(games_behind))
+                    # Get Playoff info
+                    sql = '''
+                            SELECT wins, losses, ties
+                            FROM seriespostUpd
+                            WHERE yearid = %s AND teamIDwinner = %s
+                          '''
+                    cur.execute(sql, [year, team_id])
+                    playoff = list(cur.fetchall())
+                    if len(playoff) == 0:
+                        playoff = list()
+                        playoff.append("0")
+                        playoff.append("0")
+                        playoff.append("0")
+                    else:
+                        playoff = list(playoff[0])
+                    final_result.append("Playoff Data")
+                    final_result.append("Wins: ")
+                    final_result.append(playoff[0])
+                    final_result.append(", Losses: ")
+                    final_result.append(playoff[1])
+                    final_result.append(", Ties: ")
+                    final_result.append(playoff[2])
+                    table.append(playoff[0])
+                    table.append(playoff[1])
+                    table.append(playoff[2])
+                    return final_result
+                ################################################################
                 # Get the rest of the needed data for division standings
                 sql = '''
                         SELECT team_name, team_w, team_l
@@ -191,9 +235,33 @@ def generate_result(form):
                 # (w2 - w1) + (l2 - l1) / 2
                 games_behind = (abs(w2 - w1) + abs(l2 - l1)) / 2.0
                 table.append(str(games_behind))
-                print(table)
-                print(other)
-                return table
+
+                # Get Playoff info
+                sql = '''
+                        SELECT wins, losses, ties
+                        FROM seriespostUpd
+                        WHERE yearid = %s AND teamIDwinner = %s
+                      '''
+                cur.execute(sql, [year, team_id])
+                playoff = list(cur.fetchall())
+                if len(playoff) == 0:
+                    playoff = list()
+                    playoff.append("0")
+                    playoff.append("0")
+                    playoff.append("0")
+                else:
+                    playoff = list(playoff[0])
+                table.append(playoff[0])
+                table.append(playoff[1])
+                table.append(playoff[2])
+                final_result.append("Playoff Data")
+                final_result.append("Wins: ")
+                final_result.append(playoff[0])
+                final_result.append(", Losses: ")
+                final_result.append(playoff[1])
+                final_result.append(", Ties: ")
+                final_result.append(playoff[2])
+                return final_result
             except Exception:
                 con.rollback()
                 print("Database exception.")
