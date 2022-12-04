@@ -124,6 +124,15 @@ def admin():
                 s = s + " " + cat[count-1] + " " + t
             count = count + 1
         user_data.append(s)
+    ########################################################################################
+    # Use a dictionary where the key is temp[0][2] <- the username
+    # and the value is the number of occurrences
+    # user_counter = {}
+    # for t in temp:
+    #     user_counter[]
+
+    # print(str(temp[0][2]))
+    ########################################################################################
 
     return render_template('adminView.html', user_data=user_data)
 
