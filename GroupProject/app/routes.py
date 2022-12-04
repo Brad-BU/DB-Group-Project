@@ -8,7 +8,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, MainForm
 from app.models import User, UserActions
 from datetime import datetime
-import csi3335 as cfg
+import csi3335fa2022 as cfg
 
 
 

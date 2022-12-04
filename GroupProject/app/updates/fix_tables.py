@@ -1,7 +1,7 @@
 import pymysql
 import sys
 from datetime import date
-import csi3335 as cfg
+import csi3335fa2022 as cfg
 
 con = pymysql.connect(host=cfg.mysql['location'], user=cfg.mysql['user'], password=cfg.mysql['password'],
                       db=cfg.mysql['database'])

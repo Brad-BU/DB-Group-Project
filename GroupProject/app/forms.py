@@ -1,5 +1,5 @@
 import pymysql
-import csi3335 as cfg
+import csi3335fa2022 as cfg
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError

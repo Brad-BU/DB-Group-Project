@@ -1,5 +1,5 @@
 import os
-import csi3335 as cfg
+import csi3335fa2022 as cfg
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
