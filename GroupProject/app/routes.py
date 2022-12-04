@@ -127,10 +127,7 @@ def admin():
         u.result = tem[5]
         u.datetime = tem[6]
         user_data.append(u)
-        print(u)
-
     userCount = Counter(i[2] for i in temp)
-
     return render_template('adminView.html', user_data=user_data, userCount=userCount)
 
 
@@ -156,7 +153,6 @@ def generate_result(form):
                 table = list(cur.fetchall())
                 if len(table) == 0:
                     return table
-                print(table)
                 table = list(table[0])
                 final_result.append("Team: ")
                 final_result.append(table[0])
