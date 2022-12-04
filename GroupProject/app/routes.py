@@ -1,3 +1,5 @@
+from collections import Counter
+
 import pymysql
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from werkzeug.urls import url_parse
@@ -114,6 +116,19 @@ def admin():
     cur.execute(sql)
     temp = list(cur.fetchall())
     user_data = []
+
+
+    temp = list(temp[0])
+    for t in temp
+        u = UserActions()
+        u.userId = t.id
+        u.username = t.username
+        u.search_filter0 = t.sear
+        user_data.append(u)
+    print()
+    # user_data.append(UserActions())
+    # user.userid =
+
     cat = ["ID:", "User:", "Team:", "Results:", "Date:", "Time:"]
     for td in temp:
         s = ""
@@ -121,20 +136,14 @@ def admin():
         for t in td:
             if count != 0:
                 t = str(t)
-                s = s + " " + cat[count-1] + " " + t
+                t = t.replace(',', '')
+                s = s + " " + cat[count-1] + " " + t + " ||"
             count = count + 1
         user_data.append(s)
-    ########################################################################################
-    # Use a dictionary where the key is temp[0][2] <- the username
-    # and the value is the number of occurrences
-    # user_counter = {}
-    # for t in temp:
-    #     user_counter[]
 
-    # print(str(temp[0][2]))
-    ########################################################################################
+    userCount = Counter(i[2] for i in temp)
 
-    return render_template('adminView.html', user_data=user_data)
+    return render_template('adminView.html', user_data=user_data, userCount=userCount)
 
 
 def generate_result(form):
@@ -161,18 +170,19 @@ def generate_result(form):
                     return table
                 print(table)
                 table = list(table[0])
-                final_result.append("Team: ")
+                final_result.append("|| Team: ")
                 final_result.append(table[0])
-                final_result.append(", Wins: ")
+                final_result.append("|| Wins: ")
                 final_result.append(table[1])
-                final_result.append(", Losses: ")
+                final_result.append("|| Losses: ")
                 final_result.append(table[2])
                 # , (team_w / (team_w + team_l) )
                 w1 = int(table[1])
                 l1 = int(table[2])
-                percent = w1 / (w1 + l1)
-                final_result.append(", Win%: ")
-                final_result.append(str(percent))
+                percent = (w1 / (w1 + l1)) * 100
+                final_result.append("|| Win%: ")
+                final_result.append(str(round(percent, 2)))
+                final_result.append(" ||")
                 table.append(percent)
                 # Get lg id from team to calculate games behind
                 lgid = table[3]
@@ -197,7 +207,7 @@ def generate_result(form):
                     # (w2 - w1) + (l2 - l1) / 2
                     games_behind = (abs(w2 - w1) + abs(l2 - l1)) / 2.0
                     table.append(str(games_behind))
-                    final_result.append(", Games Behind: ")
+                    final_result.append("|| Games Behind: ")
                     final_result.append(str(games_behind))
                     # Get Playoff info
                     sql = '''
@@ -217,9 +227,9 @@ def generate_result(form):
                     final_result.append("Playoff Data")
                     final_result.append("Wins: ")
                     final_result.append(playoff[0])
-                    final_result.append(", Losses: ")
+                    final_result.append("|| Losses: ")
                     final_result.append(playoff[1])
-                    final_result.append(", Ties: ")
+                    final_result.append("|| Ties: ")
                     final_result.append(playoff[2])
                     table.append(playoff[0])
                     table.append(playoff[1])
@@ -263,12 +273,12 @@ def generate_result(form):
                 table.append(playoff[0])
                 table.append(playoff[1])
                 table.append(playoff[2])
-                final_result.append("Playoff Data")
+                final_result.append("Playoff Data: ")
                 final_result.append("Wins: ")
                 final_result.append(playoff[0])
-                final_result.append(", Losses: ")
+                final_result.append("|| Losses: ")
                 final_result.append(playoff[1])
-                final_result.append(", Ties: ")
+                final_result.append("|| Ties: ")
                 final_result.append(playoff[2])
                 return final_result
             except Exception:

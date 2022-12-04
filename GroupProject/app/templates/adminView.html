@@ -23,6 +23,12 @@
 	{% for row in user_data %}
     <p>{{ row }}</p>
       {% endfor %}
+
+    <h2>Total Calls Made By Users:</h2>
+    <p>{{ row }}</p>
+    {% for key, value in userCount.items() %}
+        <p>{{key}}: {{value}}</p>
+    {% endfor %}
       <a style="font-size:20px" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">Export to csv</a>
 </article>
 </section>
