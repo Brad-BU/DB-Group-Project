@@ -1,5 +1,5 @@
 # CSI 3335 DB Group Project: Team Info
-Team Name: 2B || !2B
+Team Name: Baseball
 
 Team Members:
 - Brad Buckingham
