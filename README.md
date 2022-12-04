@@ -1,5 +1,12 @@
 # CSI 3335 DB Group Project: Team Info
-Team Name: Baseball
+Team Name: Baseball \
+BA - Baylor \
+S - Software \
+E - Engineering \
+B - Buddies \
+A - And \
+L - Living \
+L - Legends
 
 Team Members:
 - Brad Buckingham
@@ -43,6 +50,10 @@ result varchar(64) not null, \
 datetime varchar(64) not null \
 );
 
+create table teamsupd as select * from teams; \
+create table battingupd as select * from batting; \
+create table pitchingupd as select * from pitching;
+
 After running the above, we wrote python scripts and ran each to make changes to the data base. All of which are placed in the folder named 'updates'
 
 
@@ -76,5 +87,3 @@ JavaScript
 Create a new user function \
 Dynamic dropdown boxes \
 Remember me check box at login
-
-
